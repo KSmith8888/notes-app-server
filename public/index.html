@@ -16,6 +16,9 @@
                 <button id="open-sign-in-modal-button" class="button">
                     Sign In
                 </button>
+                <button id="open-create-account-modal-button" class="button">
+                    Create Account
+                </button>
                 <p id="sign-in-error-message"></p>
                 <dialog id="sign-in-modal">
                     <form id="sign-in-form">
@@ -28,9 +31,59 @@
                             X
                         </button>
                         <label for="username-input">Username:</label>
-                        <input id="username-input" type="text" required />
-                        <label for="password-input">Password</label>
-                        <input id="password-input" type="password" required />
+                        <input
+                            id="username-input"
+                            type="text"
+                            maxlength="12"
+                            required
+                        />
+                        <label for="password-input">Password:</label>
+                        <input
+                            id="password-input"
+                            type="password"
+                            maxlength="12"
+                            required
+                        />
+                        <button class="button" type="submit">Submit</button>
+                    </form>
+                </dialog>
+                <dialog id="create-account-modal">
+                    <form id="create-account-form">
+                        <button
+                            id="close-create-account-modal-button"
+                            class="button"
+                            type="button"
+                            aria-label="Close"
+                        >
+                            X
+                        </button>
+                        <label for="create-username-input"
+                            >Create Username:</label
+                        >
+                        <input
+                            id="create-username-input"
+                            type="text"
+                            maxlength="12"
+                            required
+                        />
+                        <label for="create-password-input"
+                            >Create Password:</label
+                        >
+                        <input
+                            id="create-password-input"
+                            type="password"
+                            maxlength="12"
+                            required
+                        /><label for="confirm-password-input"
+                            >Confirm Password:</label
+                        >
+                        <input
+                            id="confirm-password-input"
+                            type="password"
+                            maxlength="12"
+                            required
+                        />
+
                         <button class="button" type="submit">Submit</button>
                     </form>
                 </dialog>

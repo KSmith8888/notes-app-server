@@ -12,7 +12,8 @@ body {
     border-radius: 5px;
 }
 
-#sign-in-form {
+#sign-in-form,
+#create-account-form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -26,6 +27,6 @@ body {
     display: none;
 }
 
-.sign-in-error-message {
+#sign-in-error-message {
     color: red;
 }
