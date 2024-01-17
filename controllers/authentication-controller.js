@@ -1,3 +1,5 @@
+import { User } from "../models/user-model.js";
+
 const loginAttempt = (req, res) => {
     res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
     try {
@@ -29,7 +31,7 @@ const loginAttempt = (req, res) => {
     }
 };
 
-const createAccount = (req, res) => {
+const createAccount = async (req, res) => {
     res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
     try {
         if (!req.body.username || !req.body.password) {
@@ -37,11 +39,22 @@ const createAccount = (req, res) => {
                 "Credential Error: Username or password not provided"
             );
         }
-        const username = req.body.username;
-        //const password = req.body.password;
+        const newUsername = req.body.username;
+        const newPassword = req.body.password;
+        const newAccountInfo = {
+            username: newUsername,
+            password: newPassword,
+        };
+        const requestedUsername = await User.findOne({
+            username: newUsername,
+        });
+        if (requestedUsername?.password) {
+            throw new Error("Username unavailable Error: Duplicate entry");
+        }
+        await User.create(newAccountInfo);
         res.status(200);
         res.json({
-            message: `New account for ${username} created successfully`,
+            message: `New account for ${newUsername} created successfully`,
         });
     } catch (error) {
         res.status(401);
