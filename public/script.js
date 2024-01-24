@@ -9,6 +9,7 @@ const passwordInput = document.getElementById("password-input");
 const signInErrorMsg = document.getElementById("sign-in-error-message");
 const notesSection = document.getElementById("notes-section");
 const signInSection = document.getElementById("sign-in-section");
+const signOutBtn = document.getElementById("sign-out-button");
 
 const openCreateAccountModalBtn = document.getElementById(
     "open-create-account-modal-button"
@@ -40,6 +41,10 @@ openSignInModalBtn.addEventListener("click", () => {
 signInForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
+        const isAlreadySignedIn = sessionStorage.getItem("user");
+        if (isAlreadySignedIn) {
+            throw new Error("Error: already signed in");
+        }
         if (usernameInput.value === "" || passwordInput.value === "") {
             throw new Error("Please provide a username and password");
         }
@@ -58,10 +63,18 @@ signInForm.addEventListener("submit", async (e) => {
             }
         );
         if (!response.ok) {
-            throw new Error(`Status error: ${response.status}`);
+            const errorData = await response.json();
+            console.log(errorData.message);
+            if (errorData && errorData.message) {
+                throw new Error(errorData.message);
+            } else {
+                throw new Error(`Status error: ${response.status}`);
+            }
         }
         const data = await response.json();
+        sessionStorage.setItem("user", data.message);
         signInErrorMsg.textContent = "";
+        signOutBtn.classList.remove("hidden");
         signInForm.reset();
         signInModal.close();
         signInSection.classList.add("hidden");
@@ -109,7 +122,13 @@ createAccountForm.addEventListener("submit", async (e) => {
             }
         );
         if (!response.ok) {
-            throw new Error(`Status error: ${response.status}`);
+            const errorData = await response.json();
+            console.log(errorData.message);
+            if (errorData && errorData.message) {
+                throw new Error(errorData.message);
+            } else {
+                throw new Error(`Status error: ${response.status}`);
+            }
         }
         const data = await response.json();
         console.log(data);
@@ -125,4 +144,35 @@ createAccountForm.addEventListener("submit", async (e) => {
 
 closeCreateAccountModalBtn.addEventListener("click", () => {
     createAccountModal.close();
+});
+
+signOutBtn.addEventListener("click", async () => {
+    try {
+        const currentUser = sessionStorage.getItem("user");
+        if (!currentUser) {
+            throw new Error("Error: not currently signed in");
+        }
+        console.log(currentUser);
+        const response = await fetch(
+            `http://127.0.0.1:5173/api/v1/authentication/logout`,
+            {
+                method: "POST",
+                body: JSON.stringify({ username: currentUser }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const data = await response.json();
+        if (!data) {
+            throw new Error(
+                "Error: There was a problem signing out, please try again later"
+            );
+        }
+        notesSection.replaceChildren();
+        signOutBtn.classList.add("hidden");
+        signInSection.classList.remove("hidden");
+    } catch (error) {
+        console.error(error.message);
+    }
 });
