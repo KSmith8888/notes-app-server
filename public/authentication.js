@@ -7,10 +7,9 @@ const signInForm = document.getElementById("sign-in-form");
 const usernameInput = document.getElementById("username-input");
 const passwordInput = document.getElementById("password-input");
 const signInErrorMsg = document.getElementById("sign-in-error-message");
-const notesSection = document.getElementById("notes-section");
 const signInSection = document.getElementById("sign-in-section");
 const signOutBtn = document.getElementById("sign-out-button");
-
+const notesSection = document.getElementById("notes-section");
 const openCreateAccountModalBtn = document.getElementById(
     "open-create-account-modal-button"
 );

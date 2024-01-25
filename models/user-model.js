@@ -17,6 +17,11 @@ const userSchema = new Schema({
         maxlength: 12,
         trim: true,
     },
+    notes: {
+        type: [Object],
+        required: true,
+        default: [],
+    },
 });
 
 const User = model("User", userSchema);
