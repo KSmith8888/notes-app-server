@@ -19,7 +19,7 @@ const loginAttempt = async (req, res) => {
         res.status(200);
         res.json({
             message: dbUser.username,
-            notes: ["first note", "second note", "third note"],
+            notes: dbUser.notes,
         });
     } catch (error) {
         res.status(401);

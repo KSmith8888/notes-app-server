@@ -17,7 +17,7 @@ const createNote = async (req, res) => {
             content: noteContent,
             creator: noteCreator,
         });
-        await User.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
             { username: dbUser.username },
             {
                 $set: {
@@ -26,14 +26,16 @@ const createNote = async (req, res) => {
                         {
                             content: dbNote.content,
                             timestamp: dbNote.createdAt,
+                            noteId: dbNote._id,
                         },
                     ],
                 },
             }
         );
+        console.log(updatedUser.notes.length);
         res.status(201);
         res.json({
-            note: dbNote,
+            notes: updatedUser.notes,
         });
     } catch (error) {
         res.status(401);

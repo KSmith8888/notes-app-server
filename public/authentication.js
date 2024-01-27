@@ -1,3 +1,5 @@
+import { displayNotes } from "./note.js";
+
 const openSignInModalBtn = document.getElementById("open-sign-in-modal-button");
 const closeSignInModalBtn = document.getElementById(
     "close-sign-in-modal-button"
@@ -10,6 +12,7 @@ const signInErrorMsg = document.getElementById("sign-in-error-message");
 const signInSection = document.getElementById("sign-in-section");
 const signOutBtn = document.getElementById("sign-out-button");
 const notesSection = document.getElementById("notes-section");
+const currentNotes = document.getElementById("current-notes");
 const openCreateAccountModalBtn = document.getElementById(
     "open-create-account-modal-button"
 );
@@ -21,17 +24,6 @@ const createAccountForm = document.getElementById("create-account-form");
 const createUsernameInput = document.getElementById("create-username-input");
 const createPasswordInput = document.getElementById("create-password-input");
 const confirmPasswordInput = document.getElementById("confirm-password-input");
-
-function displayNotes(notes) {
-    notesSection.replaceChildren();
-    if (Array.isArray(notes)) {
-        notes.forEach((note) => {
-            const noteText = document.createElement("p");
-            noteText.textContent = note;
-            notesSection.append(noteText);
-        });
-    }
-}
 
 openSignInModalBtn.addEventListener("click", () => {
     signInModal.showModal();
@@ -73,6 +65,7 @@ signInForm.addEventListener("submit", async (e) => {
         const data = await response.json();
         sessionStorage.setItem("user", data.message);
         signInErrorMsg.textContent = "";
+        notesSection.classList.remove("hidden");
         signOutBtn.classList.remove("hidden");
         signInForm.reset();
         signInModal.close();
@@ -168,9 +161,11 @@ signOutBtn.addEventListener("click", async () => {
                 "Error: There was a problem signing out, please try again later"
             );
         }
-        notesSection.replaceChildren();
+        currentNotes.replaceChildren();
+        notesSection.classList.add("hidden");
         signOutBtn.classList.add("hidden");
         signInSection.classList.remove("hidden");
+        sessionStorage.removeItem("user");
     } catch (error) {
         console.error(error.message);
     }

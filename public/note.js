@@ -1,5 +1,17 @@
 const notesSection = document.getElementById("notes-section");
+const currentNotes = document.getElementById("current-notes");
 const createNoteBtn = document.getElementById("create-note-button");
+
+function displayNotes(notes) {
+    currentNotes.replaceChildren();
+    if (Array.isArray(notes)) {
+        notes.forEach((note) => {
+            const noteText = document.createElement("p");
+            noteText.textContent = note.content;
+            currentNotes.append(noteText);
+        });
+    }
+}
 
 function createDateString(timestamp) {
     const date = new Date(timestamp);
@@ -32,7 +44,10 @@ createNoteBtn.addEventListener("click", async () => {
             `http://127.0.0.1:5173/api/v1/note/create`,
             {
                 method: "POST",
-                body: JSON.stringify({ content: noteContent }),
+                body: JSON.stringify({
+                    content: noteContent,
+                    username: currentUser,
+                }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -44,8 +59,10 @@ createNoteBtn.addEventListener("click", async () => {
                 "Error: There was a problem signing out, please try again later"
             );
         }
-        console.log(data);
+        displayNotes(data.notes);
     } catch (error) {
         console.error(error.message);
     }
 });
+
+export { displayNotes };
