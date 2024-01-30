@@ -1,17 +1,14 @@
-const notesSection = document.getElementById("notes-section");
+//const notesSection = document.getElementById("notes-section");
 const currentNotes = document.getElementById("current-notes");
 const createNoteBtn = document.getElementById("create-note-button");
-
-function displayNotes(notes) {
-    currentNotes.replaceChildren();
-    if (Array.isArray(notes)) {
-        notes.forEach((note) => {
-            const noteText = document.createElement("p");
-            noteText.textContent = note.content;
-            currentNotes.append(noteText);
-        });
-    }
-}
+const createNoteModal = document.getElementById("create-note-modal");
+const createNoteForm = document.getElementById("create-note-form");
+const closeCreateNoteModalBtn = document.getElementById(
+    "close-create-note-modal-button"
+);
+const createNoteContentInput = document.getElementById(
+    "create-note-content-input"
+);
 
 function createDateString(timestamp) {
     const date = new Date(timestamp);
@@ -24,22 +21,49 @@ function createDateString(timestamp) {
             ? `${initialMinutes} ${hoursAmPm}`
             : `0${initialMinutes} ${hoursAmPm}`;
     const dateString = date.toDateString();
-    const completeDateString = `${hours}:${minutes} ${dateString}`;
+    const completeDateString = `Created at ${hours}:${minutes} ${dateString}`;
     return completeDateString;
 }
-/*
-function generateNoteHTML(content, timstamp) {
 
+function displayNotes(notes) {
+    currentNotes.replaceChildren();
+    if (Array.isArray(notes)) {
+        notes.forEach((note) => {
+            const noteArticle = document.createElement("article");
+            const noteText = document.createElement("p");
+            noteText.textContent = note.content;
+            noteArticle.append(noteText);
+            const noteDateString = document.createElement("p");
+            noteDateString.textContent = createDateString(note.timestamp);
+            noteArticle.append(noteDateString);
+            const deleteNoteBtn = document.createElement("button");
+            deleteNoteBtn.classList.add("button");
+            deleteNoteBtn.textContent = "Delete";
+            deleteNoteBtn.dataset.id = note.noteId;
+            deleteNoteBtn.addEventListener("click", () => {
+                deleteNote(deleteNoteBtn.dataset.id);
+            });
+            noteArticle.append(deleteNoteBtn);
+            currentNotes.append(noteArticle);
+        });
+    }
 }
-*/
 
-createNoteBtn.addEventListener("click", async () => {
+createNoteBtn.addEventListener("click", () => {
+    createNoteModal.showModal();
+});
+
+createNoteForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
     try {
         const currentUser = sessionStorage.getItem("user");
         if (!currentUser) {
             throw new Error("Error: not currently signed in");
         }
-        const noteContent = "This is only a test";
+        const noteContent = createNoteContentInput.value;
+        if (noteContent === "") {
+            throw new Error("Note content was not provided");
+        }
         const response = await fetch(
             `http://127.0.0.1:5173/api/v1/note/create`,
             {
@@ -56,13 +80,50 @@ createNoteBtn.addEventListener("click", async () => {
         const data = await response.json();
         if (!data) {
             throw new Error(
-                "Error: There was a problem signing out, please try again later"
+                "Error: There was a problem, please try again later"
+            );
+        }
+        createNoteForm.reset();
+        createNoteModal.close();
+        displayNotes(data.notes);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+closeCreateNoteModalBtn.addEventListener("click", () => {
+    createNoteForm.reset();
+    createNoteModal.close();
+});
+
+async function deleteNote(noteId) {
+    try {
+        const currentUser = sessionStorage.getItem("user");
+        if (!currentUser) {
+            throw new Error("Error: not currently signed in");
+        }
+        const response = await fetch(
+            `http://127.0.0.1:5173/api/v1/note/delete`,
+            {
+                method: "DELETE",
+                body: JSON.stringify({
+                    id: noteId,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const data = await response.json();
+        if (!data) {
+            throw new Error(
+                "Error: There was a problem, please try again later"
             );
         }
         displayNotes(data.notes);
     } catch (error) {
         console.error(error.message);
     }
-});
+}
 
 export { displayNotes };
