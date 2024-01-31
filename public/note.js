@@ -1,4 +1,3 @@
-//const notesSection = document.getElementById("notes-section");
 const currentNotes = document.getElementById("current-notes");
 const createNoteBtn = document.getElementById("create-note-button");
 const createNoteModal = document.getElementById("create-note-modal");
@@ -32,9 +31,11 @@ function displayNotes(notes) {
             const noteArticle = document.createElement("article");
             const noteText = document.createElement("p");
             noteText.textContent = note.content;
+            noteText.classList.add("note-text");
             noteArticle.append(noteText);
             const noteDateString = document.createElement("p");
             noteDateString.textContent = createDateString(note.timestamp);
+            noteDateString.classList.add("note-date-string");
             noteArticle.append(noteDateString);
             const deleteNoteBtn = document.createElement("button");
             deleteNoteBtn.classList.add("button");
@@ -60,8 +61,8 @@ createNoteForm.addEventListener("submit", async (e) => {
         if (!currentUser) {
             throw new Error("Error: not currently signed in");
         }
-        const noteContent = createNoteContentInput.value;
-        if (noteContent === "") {
+        const noteContent = createNoteContentInput.textContent;
+        if (!noteContent) {
             throw new Error("Note content was not provided");
         }
         const response = await fetch(

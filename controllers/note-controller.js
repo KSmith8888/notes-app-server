@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import { Note } from "../models/note-model.js";
 import { User } from "../models/user-model.js";
 
@@ -27,7 +29,7 @@ const createNote = async (req, res) => {
                             content: dbNote.content,
                             timestamp: dbNote.createdAt,
                             completed: dbNote.completed,
-                            noteId: dbNote._id,
+                            noteId: String(dbNote._id),
                         },
                     ],
                 },
@@ -51,10 +53,13 @@ const deleteNote = async (req, res) => {
     res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
     try {
         const deleteNoteId = req.body.id;
-        if (!deleteNoteId) {
+        if (!deleteNoteId || typeof deleteNoteId !== "string") {
             throw new Error("Error: No note ID was provided");
         }
-        const dbNote = await Note.findOne({ _id: String(deleteNoteId) });
+        const noteObjectId = new mongoose.Types.ObjectId(deleteNoteId);
+        const dbNote = await Note.findOne({
+            _id: noteObjectId,
+        });
         if (!dbNote) {
             throw new Error("Invalid note ID");
         }
@@ -73,7 +78,6 @@ const deleteNote = async (req, res) => {
             }
         );
         const updatedUser = await User.findOne({ username: dbUser.username });
-        console.log(updatedUser.notes.length);
         res.status(201);
         res.json({
             notes: updatedUser.notes,

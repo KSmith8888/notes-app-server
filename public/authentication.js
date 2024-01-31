@@ -24,6 +24,7 @@ const createAccountForm = document.getElementById("create-account-form");
 const createUsernameInput = document.getElementById("create-username-input");
 const createPasswordInput = document.getElementById("create-password-input");
 const confirmPasswordInput = document.getElementById("confirm-password-input");
+const accountInfoUsername = document.getElementById("account-info-username");
 
 openSignInModalBtn.addEventListener("click", () => {
     signInModal.showModal();
@@ -64,6 +65,7 @@ signInForm.addEventListener("submit", async (e) => {
         }
         const data = await response.json();
         sessionStorage.setItem("user", data.message);
+        accountInfoUsername.textContent = data.message;
         signInErrorMsg.textContent = "";
         notesSection.classList.remove("hidden");
         signOutBtn.classList.remove("hidden");
@@ -161,6 +163,7 @@ signOutBtn.addEventListener("click", async () => {
                 "Error: There was a problem signing out, please try again later"
             );
         }
+        accountInfoUsername.textContent = "";
         currentNotes.replaceChildren();
         notesSection.classList.add("hidden");
         signOutBtn.classList.add("hidden");

@@ -7,19 +7,42 @@ body {
     padding: 0;
 }
 
+#header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em;
+}
+
+#main-heading {
+    margin: 0;
+}
+
+#account-info {
+    display: flex;
+}
+
+#account-info-username {
+    margin: 0.5em;
+    font-size: 1.1rem;
+}
+
 .button {
     cursor: pointer;
     border-radius: 5px;
+    margin: 0.5em 0;
 }
 
-#sign-in-form,
-#create-account-form {
+.form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-#close-sign-in-modal-button {
+.textarea {
+    resize: none;
+}
+
+.close-button {
     align-self: flex-end;
 }
 
@@ -29,4 +52,9 @@ body {
 
 #sign-in-error-message {
     color: red;
+}
+
+.note-date-string,
+.note-text {
+    margin: 0.5em;
 }

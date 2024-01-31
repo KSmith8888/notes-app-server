@@ -8,8 +8,13 @@
     </head>
     <body>
         <header id="header">
-            <h1>Notes App</h1>
-            <button id="sign-out-button" class="button hidden">Sign Out</button>
+            <h1 id="main-heading">Notes App</h1>
+            <div id="account-info">
+                <p id="account-info-username"></p>
+                <button id="sign-out-button" class="button hidden">
+                    Sign Out
+                </button>
+            </div>
         </header>
         <main id="main">
             <section id="sign-in-section">
@@ -22,10 +27,10 @@
                 </button>
                 <p id="sign-in-error-message"></p>
                 <dialog id="sign-in-modal">
-                    <form id="sign-in-form">
+                    <form id="sign-in-form" class="form">
                         <button
                             id="close-sign-in-modal-button"
-                            class="button"
+                            class="button close-button"
                             type="button"
                             aria-label="Close"
                         >
@@ -49,10 +54,10 @@
                     </form>
                 </dialog>
                 <dialog id="create-account-modal">
-                    <form id="create-account-form">
+                    <form id="create-account-form" class="form">
                         <button
                             id="close-create-account-modal-button"
-                            class="button"
+                            class="button close-button"
                             type="button"
                             aria-label="Close"
                         >
@@ -94,22 +99,25 @@
                     Create Note
                 </button>
                 <dialog id="create-note-modal">
-                    <form id="create-note-form">
+                    <form id="create-note-form" class="form">
                         <button
                             id="close-create-note-modal-button"
-                            class="button"
+                            class="button close-button"
                             type="button"
                             aria-label="Close"
                         >
                             X
                         </button>
                         <label for="create-note-content-input">Note:</label>
-                        <input
+                        <textarea
                             id="create-note-content-input"
-                            type="text"
+                            class="textarea"
                             minlength="4"
                             maxlength="300"
-                        />
+                            rows="12"
+                            cols="40"
+                            required
+                        ></textarea>
                         <button class="button" type="submit">Submit</button>
                     </form>
                 </dialog>
