@@ -121,6 +121,29 @@
                         <button class="button" type="submit">Submit</button>
                     </form>
                 </dialog>
+                <dialog id="edit-note-modal">
+                    <form id="edit-note-form" class="form">
+                        <button
+                            id="close-edit-note-modal-button"
+                            class="button close-button"
+                            type="button"
+                            aria-label="Close"
+                        >
+                            X
+                        </button>
+                        <label for="edit-note-content-input">Note:</label>
+                        <textarea
+                            id="edit-note-content-input"
+                            class="textarea"
+                            minlength="4"
+                            maxlength="300"
+                            rows="12"
+                            cols="40"
+                            required
+                        ></textarea>
+                        <button class="button" type="submit">Submit</button>
+                    </form>
+                </dialog>
                 <div id="current-notes"></div>
             </section>
         </main>

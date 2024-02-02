@@ -8,6 +8,12 @@ const closeCreateNoteModalBtn = document.getElementById(
 const createNoteContentInput = document.getElementById(
     "create-note-content-input"
 );
+const editNoteModal = document.getElementById("edit-note-modal");
+const editNoteForm = document.getElementById("edit-note-form");
+const closeEditNoteModalBtn = document.getElementById(
+    "close-edit-note-modal-button"
+);
+const editNoteContentInput = document.getElementById("edit-note-content-input");
 
 function createDateString(timestamp) {
     const date = new Date(timestamp);
@@ -37,6 +43,15 @@ function displayNotes(notes) {
             noteDateString.textContent = createDateString(note.timestamp);
             noteDateString.classList.add("note-date-string");
             noteArticle.append(noteDateString);
+            const editNoteBtn = document.createElement("button");
+            editNoteBtn.classList.add("button");
+            editNoteBtn.textContent = "Edit";
+            editNoteBtn.addEventListener("click", () => {
+                editNoteContentInput.textContent = note.content;
+                editNoteContentInput.dataset.id = note.noteId;
+                editNoteModal.showModal();
+            });
+            noteArticle.append(editNoteBtn);
             const deleteNoteBtn = document.createElement("button");
             deleteNoteBtn.classList.add("button");
             deleteNoteBtn.textContent = "Delete";
@@ -50,6 +65,21 @@ function displayNotes(notes) {
     }
 }
 
+editNoteForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+        const noteId = editNoteContentInput.dataset.id;
+        console.log(`Edited note ${noteId}`);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+closeEditNoteModalBtn.addEventListener("click", () => {
+    editNoteForm.reset();
+    editNoteModal.close();
+});
+
 createNoteBtn.addEventListener("click", () => {
     createNoteModal.showModal();
 });
@@ -61,7 +91,7 @@ createNoteForm.addEventListener("submit", async (e) => {
         if (!currentUser) {
             throw new Error("Error: not currently signed in");
         }
-        const noteContent = createNoteContentInput.textContent;
+        const noteContent = createNoteContentInput.value;
         if (!noteContent) {
             throw new Error("Note content was not provided");
         }
