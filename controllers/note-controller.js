@@ -49,6 +49,65 @@ const createNote = async (req, res) => {
     }
 };
 
+const editNote = async (req, res) => {
+    res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
+    try {
+        const editNoteId = req.body.noteId;
+        const editNoteContent = req.body.content;
+        if (!editNoteId || typeof editNoteId !== "string") {
+            throw new Error("Error: No note ID was provided");
+        }
+        const noteObjectId = new mongoose.Types.ObjectId(editNoteId);
+        const dbNote = await Note.findOne({
+            _id: noteObjectId,
+        });
+        if (!dbNote) {
+            throw new Error("Invalid note ID");
+        }
+        const noteCreator = dbNote.creator;
+        await Note.findOneAndUpdate(
+            { _id: noteObjectId },
+            {
+                $set: {
+                    content: editNoteContent,
+                },
+            }
+        );
+        const dbUser = await User.findOne({ username: String(noteCreator) });
+        const newNotes = dbUser.notes.map((note) => {
+            if (note.noteId === editNoteId) {
+                const editedNote = {
+                    content: editNoteContent,
+                    timestamp: note.timestamp,
+                    completed: note.completed,
+                    noteId: note.noteId,
+                };
+                return editedNote;
+            }
+            return note;
+        });
+        await User.findOneAndUpdate(
+            { username: dbUser.username },
+            {
+                $set: {
+                    notes: newNotes,
+                },
+            }
+        );
+        const updatedUser = await User.findOne({ username: dbUser.username });
+        res.status(200);
+        res.json({
+            notes: updatedUser.notes,
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(401);
+        res.json({
+            message: error.message,
+        });
+    }
+};
+
 const deleteNote = async (req, res) => {
     res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
     try {
@@ -78,7 +137,7 @@ const deleteNote = async (req, res) => {
             }
         );
         const updatedUser = await User.findOne({ username: dbUser.username });
-        res.status(201);
+        res.status(200);
         res.json({
             notes: updatedUser.notes,
         });
@@ -91,4 +150,4 @@ const deleteNote = async (req, res) => {
     }
 };
 
-export { createNote, deleteNote };
+export { createNote, editNote, deleteNote };

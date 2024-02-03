@@ -69,7 +69,33 @@ editNoteForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
         const noteId = editNoteContentInput.dataset.id;
-        console.log(`Edited note ${noteId}`);
+        const currentUser = sessionStorage.getItem("user");
+        if (!currentUser) {
+            throw new Error("Error: not currently signed in");
+        }
+        const noteContent = editNoteContentInput.value;
+        if (!noteContent) {
+            throw new Error("Note content was not provided");
+        }
+        const response = await fetch(`http://127.0.0.1:5173/api/v1/note/edit`, {
+            method: "PATCH",
+            body: JSON.stringify({
+                content: noteContent,
+                noteId,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await response.json();
+        if (!data) {
+            throw new Error(
+                "Error: There was a problem, please try again later"
+            );
+        }
+        editNoteForm.reset();
+        editNoteModal.close();
+        displayNotes(data.notes);
     } catch (error) {
         console.error(error.message);
     }
