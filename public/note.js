@@ -50,6 +50,7 @@ function displayNotes(notes) {
                 editNoteContentInput.textContent = note.content;
                 editNoteContentInput.dataset.id = note.noteId;
                 editNoteModal.showModal();
+                editNoteContentInput.focus();
             });
             noteArticle.append(editNoteBtn);
             const deleteNoteBtn = document.createElement("button");
@@ -108,6 +109,7 @@ closeEditNoteModalBtn.addEventListener("click", () => {
 
 createNoteBtn.addEventListener("click", () => {
     createNoteModal.showModal();
+    createNoteContentInput.focus();
 });
 
 createNoteForm.addEventListener("submit", async (e) => {

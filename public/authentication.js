@@ -28,6 +28,7 @@ const accountInfoUsername = document.getElementById("account-info-username");
 
 openSignInModalBtn.addEventListener("click", () => {
     signInModal.showModal();
+    usernameInput.focus();
 });
 
 signInForm.addEventListener("submit", async (e) => {
@@ -86,6 +87,7 @@ closeSignInModalBtn.addEventListener("click", () => {
 
 openCreateAccountModalBtn.addEventListener("click", () => {
     createAccountModal.showModal();
+    createUsernameInput.focus();
 });
 
 createAccountForm.addEventListener("submit", async (e) => {

@@ -7,6 +7,13 @@ body {
     padding: 0;
 }
 
+button,
+input,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+}
+
 #header {
     display: flex;
     justify-content: space-between;
@@ -30,6 +37,17 @@ body {
     cursor: pointer;
     border-radius: 5px;
     margin: 0.5em 0;
+    background-color: rgb(218, 214, 214);
+}
+
+.button:hover,
+.button:focus {
+    background-color: rgb(199, 192, 192);
+}
+
+.modal {
+    border: 1px solid black;
+    background-color: rgb(255, 252, 69);
 }
 
 .form {
@@ -51,7 +69,7 @@ body {
 }
 
 #sign-in-error-message {
-    color: red;
+    color: #c70c0c;
 }
 
 .note-date-string,
