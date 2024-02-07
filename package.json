@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "A notes app made with NodeJS, Express and MongoDB",
     "type": "module",
-    "main": "index.js",
     "engines": {
         "node": ">=20.10.0"
     },
