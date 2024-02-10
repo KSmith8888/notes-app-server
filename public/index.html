@@ -20,15 +20,17 @@
             <main id="main">
                 <section id="sign-in-section">
                     <p>You must sign in to view your notes</p>
-                    <button id="open-sign-in-modal-button" class="button">
-                        Sign In
-                    </button>
-                    <button
-                        id="open-create-account-modal-button"
-                        class="button"
-                    >
-                        Create Account
-                    </button>
+                    <div class="button-row">
+                        <button id="open-sign-in-modal-button" class="button">
+                            Sign In
+                        </button>
+                        <button
+                            id="open-create-account-modal-button"
+                            class="button"
+                        >
+                            Create Account
+                        </button>
+                    </div>
                     <p id="sign-in-error-message"></p>
                     <dialog id="sign-in-modal" class="modal">
                         <form id="sign-in-form" class="form">
@@ -43,6 +45,7 @@
                             <label for="username-input">Username:</label>
                             <input
                                 id="username-input"
+                                class="text-input"
                                 type="text"
                                 maxlength="12"
                                 required
@@ -50,6 +53,7 @@
                             <label for="password-input">Password:</label>
                             <input
                                 id="password-input"
+                                class="text-input"
                                 type="password"
                                 maxlength="12"
                                 required
@@ -72,6 +76,7 @@
                             >
                             <input
                                 id="create-username-input"
+                                class="text-input"
                                 type="text"
                                 maxlength="12"
                                 required
@@ -81,6 +86,7 @@
                             >
                             <input
                                 id="create-password-input"
+                                class="text-input"
                                 type="password"
                                 maxlength="12"
                                 required
@@ -89,11 +95,16 @@
                             >
                             <input
                                 id="confirm-password-input"
+                                class="text-input"
                                 type="password"
                                 maxlength="12"
                                 required
                             />
-
+                            <p id="terms-of-service-text">
+                                By creating an account, you are agreeing to the
+                                <a href="#">Terms of Service</a> and our
+                                <a href="#">Privacy Policy</a>
+                            </p>
                             <button class="button" type="submit">Submit</button>
                         </form>
                     </dialog>
