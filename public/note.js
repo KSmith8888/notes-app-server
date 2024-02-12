@@ -14,6 +14,9 @@ const closeEditNoteModalBtn = document.getElementById(
     "close-edit-note-modal-button"
 );
 const editNoteContentInput = document.getElementById("edit-note-content-input");
+const editNoteCompletedInput = document.getElementById(
+    "edit-note-completed-input"
+);
 
 function createDateString(timestamp) {
     const date = new Date(timestamp);
@@ -38,6 +41,9 @@ function displayNotes(notes) {
             const noteText = document.createElement("p");
             noteText.textContent = note.content;
             noteText.classList.add("note-text");
+            if (note.completed) {
+                noteText.classList.add("faded");
+            }
             noteArticle.append(noteText);
             const noteDateString = document.createElement("p");
             noteDateString.textContent = createDateString(note.timestamp);
@@ -49,6 +55,9 @@ function displayNotes(notes) {
             editNoteBtn.addEventListener("click", () => {
                 editNoteContentInput.textContent = note.content;
                 editNoteContentInput.dataset.id = note.noteId;
+                if (note.completed) {
+                    editNoteCompletedInput.checked = true;
+                }
                 editNoteModal.showModal();
                 editNoteContentInput.focus();
             });
@@ -74,14 +83,17 @@ editNoteForm.addEventListener("submit", async (e) => {
         if (!currentUser) {
             throw new Error("Error: not currently signed in");
         }
-        const noteContent = editNoteContentInput.value;
-        if (!noteContent) {
+        const formData = new FormData(editNoteForm);
+        const completedValue = formData.get("completed");
+        const contentValue = formData.get("content");
+        if (!contentValue) {
             throw new Error("Note content was not provided");
         }
         const response = await fetch(`http://127.0.0.1:5173/api/v1/note/edit`, {
             method: "PATCH",
             body: JSON.stringify({
-                content: noteContent,
+                content: contentValue,
+                completed: completedValue,
                 noteId,
             }),
             headers: {

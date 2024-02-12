@@ -99,6 +99,15 @@ background-color: rgb(237, 255, 71);
     align-items: center;
 }
 
+.checkbox-container {
+    display: flex;
+    margin: 1em;
+}
+
+.checkbox {
+    margin: 0 0.5em;
+}
+
 .text-input {
     margin: 0.25em 0;
 }
@@ -117,6 +126,10 @@ background-color: rgb(237, 255, 71);
 
 .hidden {
     display: none;
+}
+
+.faded {
+    opacity: 0.5;
 }
 
 #sign-in-error-message {

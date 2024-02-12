@@ -54,6 +54,8 @@ const editNote = async (req, res) => {
     try {
         const editNoteId = req.body.noteId;
         const editNoteContent = req.body.content;
+        const editNoteCompleted = req.body.completed;
+        const isNoteComplete = editNoteCompleted ? true : false;
         if (!editNoteId || typeof editNoteId !== "string") {
             throw new Error("Error: No note ID was provided");
         }
@@ -70,6 +72,7 @@ const editNote = async (req, res) => {
             {
                 $set: {
                     content: editNoteContent,
+                    completed: isNoteComplete,
                 },
             }
         );
@@ -79,7 +82,7 @@ const editNote = async (req, res) => {
                 const editedNote = {
                     content: editNoteContent,
                     timestamp: note.timestamp,
-                    completed: note.completed,
+                    completed: isNoteComplete,
                     noteId: note.noteId,
                 };
                 return editedNote;

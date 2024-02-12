@@ -150,12 +150,25 @@
                             <textarea
                                 id="edit-note-content-input"
                                 class="textarea"
+                                name="content"
                                 minlength="4"
                                 maxlength="300"
                                 rows="12"
                                 cols="40"
                                 required
                             ></textarea>
+                            <div class="checkbox-container">
+                                <label for="edit-note-completed-input"
+                                    >Completed:</label
+                                >
+                                <input
+                                    id="edit-note-completed-input"
+                                    class="checkbox"
+                                    type="checkbox"
+                                    name="completed"
+                                    value="completed"
+                                />
+                            </div>
                             <button class="button" type="submit">Submit</button>
                         </form>
                     </dialog>
