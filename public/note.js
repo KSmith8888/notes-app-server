@@ -36,6 +36,10 @@ function createDateString(timestamp) {
 function displayNotes(notes) {
     currentNotes.replaceChildren();
     if (Array.isArray(notes)) {
+        notes.sort((a, b) => {
+            return a.completed - b.completed;
+        });
+        console.log(notes);
         notes.forEach((note) => {
             const noteArticle = document.createElement("article");
             const noteText = document.createElement("p");

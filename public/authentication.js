@@ -12,6 +12,7 @@ const signInErrorMsg = document.getElementById("sign-in-error-message");
 const signInSection = document.getElementById("sign-in-section");
 const signOutBtn = document.getElementById("sign-out-button");
 const notesSection = document.getElementById("notes-section");
+const notesHeader = document.getElementById("notes-header");
 const currentNotes = document.getElementById("current-notes");
 const openCreateAccountModalBtn = document.getElementById(
     "open-create-account-modal-button"
@@ -69,6 +70,7 @@ signInForm.addEventListener("submit", async (e) => {
         accountInfoUsername.textContent = data.message;
         signInErrorMsg.textContent = "";
         notesSection.classList.remove("hidden");
+        notesHeader.classList.remove("hidden");
         signOutBtn.classList.remove("hidden");
         signInForm.reset();
         signInModal.close();
@@ -168,6 +170,7 @@ signOutBtn.addEventListener("click", async () => {
         accountInfoUsername.textContent = "";
         currentNotes.replaceChildren();
         notesSection.classList.add("hidden");
+        notesHeader.classList.add("hidden");
         signOutBtn.classList.add("hidden");
         signInSection.classList.remove("hidden");
         sessionStorage.removeItem("user");
