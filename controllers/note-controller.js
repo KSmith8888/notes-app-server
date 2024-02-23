@@ -28,6 +28,7 @@ const createNote = async (req, res) => {
                         {
                             content: dbNote.content,
                             timestamp: dbNote.createdAt,
+                            updated: null,
                             completed: dbNote.completed,
                             noteId: String(dbNote._id),
                         },
@@ -54,6 +55,7 @@ const editNote = async (req, res) => {
     try {
         const editNoteId = req.body.noteId;
         const editNoteContent = req.body.content;
+        const editNoteTime = new Date();
         const editNoteCompleted = req.body.completed;
         const isNoteComplete = editNoteCompleted ? true : false;
         if (!editNoteId || typeof editNoteId !== "string") {
@@ -67,7 +69,7 @@ const editNote = async (req, res) => {
             throw new Error("Invalid note ID");
         }
         const noteCreator = dbNote.creator;
-        await Note.findOneAndUpdate(
+        const updatedDbNote = await Note.findOneAndUpdate(
             { _id: noteObjectId },
             {
                 $set: {
@@ -82,6 +84,7 @@ const editNote = async (req, res) => {
                 const editedNote = {
                     content: editNoteContent,
                     timestamp: note.timestamp,
+                    updated: editNoteTime,
                     completed: isNoteComplete,
                     noteId: note.noteId,
                 };

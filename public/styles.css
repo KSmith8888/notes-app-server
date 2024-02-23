@@ -61,6 +61,7 @@ background-color: rgb(197, 255, 185);
 }
 
 .notes-section {
+    max-width: 80%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

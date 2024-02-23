@@ -18,8 +18,9 @@ const editNoteCompletedInput = document.getElementById(
     "edit-note-completed-input"
 );
 
-function createDateString(timestamp) {
-    const date = new Date(timestamp);
+function createDateString(timestamp, edited) {
+    const usedTimestamp = edited || timestamp;
+    const date = new Date(usedTimestamp);
     const initialHours = date.getHours();
     const hoursAmPm = initialHours >= 12 ? "PM" : "AM";
     const hours = initialHours > 12 ? initialHours - 12 : initialHours;
@@ -29,7 +30,8 @@ function createDateString(timestamp) {
             ? `${initialMinutes} ${hoursAmPm}`
             : `0${initialMinutes} ${hoursAmPm}`;
     const dateString = date.toDateString();
-    const completeDateString = `Created at ${hours}:${minutes} ${dateString}`;
+    const createdOrEdited = edited ? "Edited" : "Created";
+    const completeDateString = `${createdOrEdited} at ${hours}:${minutes} ${dateString}`;
     return completeDateString;
 }
 
@@ -39,7 +41,6 @@ function displayNotes(notes) {
         notes.sort((a, b) => {
             return a.completed - b.completed;
         });
-        console.log(notes);
         notes.forEach((note) => {
             const noteArticle = document.createElement("article");
             const noteText = document.createElement("p");
@@ -50,7 +51,10 @@ function displayNotes(notes) {
             }
             noteArticle.append(noteText);
             const noteDateString = document.createElement("p");
-            noteDateString.textContent = createDateString(note.timestamp);
+            noteDateString.textContent = createDateString(
+                note.timestamp,
+                note.updated
+            );
             noteDateString.classList.add("note-date-string");
             noteArticle.append(noteDateString);
             const editNoteBtn = document.createElement("button");
